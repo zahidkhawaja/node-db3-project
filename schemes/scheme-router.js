@@ -4,6 +4,7 @@ const Schemes = require('./scheme-model.js');
 
 const router = express.Router();
 
+// GET schemes
 router.get('/', (req, res) => {
   Schemes.find()
   .then(schemes => {
@@ -14,6 +15,7 @@ router.get('/', (req, res) => {
   });
 });
 
+// GET schemes by ID
 router.get('/:id', (req, res) => {
   const { id } = req.params;
 
@@ -30,6 +32,7 @@ router.get('/:id', (req, res) => {
   });
 });
 
+// GET steps
 router.get('/:id/steps', (req, res) => {
   const { id } = req.params;
 
@@ -46,6 +49,7 @@ router.get('/:id/steps', (req, res) => {
   });
 });
 
+// POST scheme
 router.post('/', (req, res) => {
   const schemeData = req.body;
 
@@ -58,26 +62,7 @@ router.post('/', (req, res) => {
   });
 });
 
-router.post('/:id/steps', (req, res) => {
-  const stepData = req.body;
-  const { id } = req.params; 
-
-  Schemes.findById(id)
-  .then(scheme => {
-    if (scheme) {
-      Schemes.addStep(stepData, id)
-      .then(step => {
-        res.status(201).json(step);
-      })
-    } else {
-      res.status(404).json({ message: 'Could not find scheme with given id.' })
-    }
-  })
-  .catch (err => {
-    res.status(500).json({ message: 'Failed to create new step' });
-  });
-});
-
+// PUT scheme
 router.put('/:id', (req, res) => {
   const { id } = req.params;
   const changes = req.body;
@@ -98,6 +83,8 @@ router.put('/:id', (req, res) => {
   });
 });
 
+
+// DELETE scheme
 router.delete('/:id', (req, res) => {
   const { id } = req.params;
 
